@@ -1,0 +1,77 @@
+@model TT.Models.Record
+
+@{
+    ViewData["Title"] = "Finish a Task";
+}
+
+<h2>Finish the Task</h2>
+
+<form asp-action="Finish">
+    <div class="form-horizontal">
+        <h4>Finish Task</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="RecordId" />
+        @*<div class="form-group">
+            <label asp-for="UserName" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="TTUserId" class="form-control" asp-items="ViewBag.TTUserId"></select>
+                <span asp-validation-for="TTUserId" class="text-danger"></span>
+            </div>
+        </div>*@
+        <div class="form-group">
+            <label asp-for="UserName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TrackId" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="TrackId" class="form-control" asp-items="ViewBag.TrackId"></select>
+                <span asp-validation-for="TrackId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TaskStart" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TaskStart" class="form-control" />
+                <span asp-validation-for="TaskStart" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TaskEnd" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TaskEnd" class="form-control" />
+                <span asp-validation-for="TaskEnd" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Duration" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Duration, "{0:hh\\:mm\\:ss}", new { @readonly = "true" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Finish" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

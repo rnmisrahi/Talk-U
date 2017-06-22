@@ -1,0 +1,53 @@
+@model TT.Models.Record
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Record</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="RecordId" />
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskStart)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TaskStart)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskEnd)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TaskEnd)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Task)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Task.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

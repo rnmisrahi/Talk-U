@@ -1,0 +1,36 @@
+@model TalkletWords.Models.MLU
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MLU</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Age)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MLUFrom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MLUFrom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MLUTo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MLUTo)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.MLUId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

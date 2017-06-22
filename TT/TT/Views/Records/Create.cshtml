@@ -1,0 +1,62 @@
+@model TT.Models.Record
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Start a Task</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <hr />
+        
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="UserName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UserName" class="form-control" value="@UserManager.GetUserName(User)" readonly="readonly"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TrackId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="TrackId" class ="form-control" asp-items="ViewBag.TrackId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TaskStart" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TaskStart" class="form-control" />
+                <span asp-validation-for="TaskStart" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TaskEnd" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TaskEnd" class="form-control" />
+                <span asp-validation-for="TaskEnd" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Start" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

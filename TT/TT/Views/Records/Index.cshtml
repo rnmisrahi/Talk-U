@@ -1,0 +1,61 @@
+@model IEnumerable<TT.Models.Record>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Start/Stop</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TaskStart)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TaskEnd)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Task)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaskStart)
+            </td>
+            <td>
+                @if (item.TaskEnd.Year >= 2000) { 
+                    @Html.DisplayFor(modelItem => item.TaskEnd)
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Task.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RecordId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.RecordId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RecordId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

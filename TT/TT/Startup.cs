@@ -92,7 +92,7 @@ namespace TT
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Records}/{action=Index}/{id?}");
+                    template: "{controller=Records}/{action=MyTasks}/{id?}");
             });
 
             DBInitializer.Initialize(context);

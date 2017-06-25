@@ -21,9 +21,12 @@
                 <th>
                     @Html.DisplayNameFor(model => model.TaskStart)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TaskEnd)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TaskEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Task)
             </th>
@@ -45,6 +48,13 @@
             <td>
                 @if (item.TaskEnd.Year >= 2000) { 
                     @Html.DisplayFor(modelItem => item.TaskEnd)
+                }
+            </td>
+            <td>
+                @if (item.TaskEnd.Year >= 2000)
+                {
+                    @(item.Duration.ToString(@"dd\.hh\:mm\:ss"))
+                    @*@Html.DisplayFor(modelItem => item.Duration)*@
                 }
             </td>
             <td>

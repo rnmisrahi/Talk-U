@@ -105,7 +105,7 @@ namespace TT.Controllers
             {
                 _context.Add(record);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("MyTasks");
             }
             ViewData["TrackId"] = new SelectList(_context.Tracks, "TrackId", "Name", record.TrackId);
             return RedirectToAction("Index");
@@ -160,7 +160,7 @@ namespace TT.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("MyTasks");
             }
             ViewData["TrackId"] = new SelectList(_context.Tracks, "TrackId", "Name", record.TrackId);
             return View(record);

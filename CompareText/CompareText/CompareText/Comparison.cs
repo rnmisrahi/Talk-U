@@ -9,131 +9,139 @@ using System.Windows.Forms;
 
 namespace CompareText
 {
-  public partial class Comparison : Form
-  {
-    Dictionary<String, Pair> dictionary;
-    int ld; //Levenshtein Distance
-    Pair unique = null;
-
-    public Comparison(Dictionary<String, Pair> dictionary, int ld, Pair unique)
+    public partial class Comparison : Form
     {
-      InitializeComponent();
-      this.dictionary = dictionary;
-      this.ld = ld;
-    }
+        Dictionary<String, Pair> dictionary;
+        int ld; //Levenshtein Distance
+        Pair unique = null;
+        Pair totalWords = null;
 
-    public Comparison()
-    {
-      InitializeComponent();
-    }
-
-    private void countWords(Func<KeyValuePair<string, Pair>, int> doThis)
-    {
-      dgv.Rows.Clear();
-      int same = 0;
-      int left = 0;
-      int right = 0;
-      var items = from p in dictionary
-                  orderby p.Key ascending
-                  select p;
-      unique = new Pair(0, 0);
-      foreach (KeyValuePair<string, Pair> p in items)
-      {
-        doThis(p);
-        //dgv.Rows.Add(p.Key, p.Value.a, p.Value.b, p.Value.a - p.Value.b);
-        if (p.Value.a == p.Value.b)
+        public Comparison(Dictionary<String, Pair> dictionary, int ld, Pair unique)
         {
-          same += p.Value.a;
+            InitializeComponent();
+            this.dictionary = dictionary;
+            this.ld = ld;
         }
-        else if (p.Value.a > p.Value.b)
+
+        public Comparison()
         {
-          same += p.Value.b;
-          left += (p.Value.a - p.Value.b);
+            InitializeComponent();
         }
-        else
+
+        private void countWords(Func<KeyValuePair<string, Pair>, int> doThis)
         {
-          same += p.Value.a;
-          right += (p.Value.b - p.Value.a);
+            dgv.Rows.Clear();
+            int same = 0;
+            int left = 0;
+            int right = 0;
+            var items = from p in dictionary
+                        orderby p.Key ascending
+                        select p;
+            unique = new Pair(0, 0);
+            totalWords = new Pair(0, 0);
+            string ttrLeft, ttrRight;
+            foreach (KeyValuePair<string, Pair> p in items)
+            {
+                doThis(p);
+                totalWords.a += p.Value.a;
+                totalWords.b += p.Value.b;
+                //dgv.Rows.Add(p.Key, p.Value.a, p.Value.b, p.Value.a - p.Value.b);
+                if (p.Value.a == p.Value.b)
+                {
+                    same += p.Value.a;
+                }
+                else if (p.Value.a > p.Value.b)
+                {
+                    same += p.Value.b;
+                    left += (p.Value.a - p.Value.b);
+                }
+                else
+                {
+                    same += p.Value.a;
+                    right += (p.Value.b - p.Value.a);
+                }
+                if (p.Value.a > 0)
+                    unique.a++;
+                if (p.Value.b > 0)
+                    unique.b++;
+            }
+            ttrLeft = (totalWords.a == 0) ? "NA" : String.Format("{0:0.00}", (double)unique.a / totalWords.a).ToString();
+            ttrRight = (totalWords.b == 0) ? "NA" : String.Format("{0:0.00}", (double)unique.b / totalWords.b).ToString();
+            lblResults.Text = string.Format("Frequency: {0} words concide. {1} more words on Left. {2} More words on Right. ({3:p})", same, left, right, (double)same / (same + left + right));
+            lblLD.Text = string.Format("Levenshtein distance: {0}. ", ld);
+            label1.Text = String.Format("Total && Unique words on Left: {0} && {1} - on Right: {2} && {3}", totalWords.a, unique.a, totalWords.b, unique.b);
+            lblTTR.Text = String.Format("TTR Left: {0} - on Right: {1}", ttrLeft, ttrRight);
         }
-        if (p.Value.a > 0)
-          unique.a++;
-        if (p.Value.b > 0)
-          unique.b++;
-      }
-      lblResults.Text = string.Format("Frequency: {0} words concide. {1} more words on Left. {2} More words on Right. ({3:p})", same, left, right, (double)same/(same + left + right));
-      lblLD.Text = string.Format("Levenshtein distance: {0}. ", ld);
-      label1.Text = label1.Text = String.Format("Unique words on left: {0} - on right: {1}", unique.a, unique.b);
-    }
 
-    private int addAll(KeyValuePair<string, Pair> p)
-    {
-      dgv.Rows.Add(p.Key, p.Value.a, p.Value.b, p.Value.a - p.Value.b);
-      return 0;
-    }
-
-    private int addDiff(KeyValuePair<string, Pair> p)
-    {
-      if (p.Value.a != p.Value.b)
-        dgv.Rows.Add(p.Key, p.Value.a, p.Value.b, p.Value.a - p.Value.b);
-      return 0;
-    }
-
-    private void btnAll_Click(object sender, EventArgs e)
-    {
-      countWords(addAll);
-      if (true)
-        return;
-      dgv.Rows.Clear();
-      int same = 0;
-      int left = 0;
-      int right = 0;
-      var items = from p in dictionary
-                  orderby p.Key ascending
-                  select p;
-      foreach (KeyValuePair<string, Pair> p in items)
-      {
-        dgv.Rows.Add(p.Key, p.Value.a, p.Value.b, p.Value.a - p.Value.b);
-        if (p.Value.a == p.Value.b)
+        private int addAll(KeyValuePair<string, Pair> p)
         {
-          same += p.Value.a;
+            dgv.Rows.Add(p.Key, p.Value.a, p.Value.b, p.Value.a - p.Value.b);
+            return 0;
         }
-        else if (p.Value.a > p.Value.b)
+
+        private int addDiff(KeyValuePair<string, Pair> p)
         {
-          same += p.Value.b;
-          left += (p.Value.a - p.Value.b);
+            if (p.Value.a != p.Value.b)
+                dgv.Rows.Add(p.Key, p.Value.a, p.Value.b, p.Value.a - p.Value.b);
+            return 0;
         }
-        else
+
+        private void btnAll_Click(object sender, EventArgs e)
         {
-          same += p.Value.a;
-          right += (p.Value.b = p.Value.a);
+            countWords(addAll);
+            if (true)
+                return;
+            dgv.Rows.Clear();
+            int same = 0;
+            int left = 0;
+            int right = 0;
+            var items = from p in dictionary
+                        orderby p.Key ascending
+                        select p;
+            foreach (KeyValuePair<string, Pair> p in items)
+            {
+                dgv.Rows.Add(p.Key, p.Value.a, p.Value.b, p.Value.a - p.Value.b);
+                if (p.Value.a == p.Value.b)
+                {
+                    same += p.Value.a;
+                }
+                else if (p.Value.a > p.Value.b)
+                {
+                    same += p.Value.b;
+                    left += (p.Value.a - p.Value.b);
+                }
+                else
+                {
+                    same += p.Value.a;
+                    right += (p.Value.b = p.Value.a);
+                }
+            }
         }
-      }
-    }
 
-    private void Comparison_Load(object sender, EventArgs e)
-    {
-      countWords(addDiff);
-    }
+        private void Comparison_Load(object sender, EventArgs e)
+        {
+            countWords(addDiff);
+        }
 
-    private void btnDifferences_Click(object sender, EventArgs e)
-    {
-      countWords(addDiff);
-      if (true) return;
-      dgv.Rows.Clear();
-      var items = from p in dictionary
-                  orderby p.Key ascending
-                  select p;
-      foreach (KeyValuePair<string, Pair> p in items)
-      {
-        if (p.Value.a != p.Value.b)
-          dgv.Rows.Add(p.Key, p.Value.a, p.Value.b, p.Value.a - p.Value.b);
-      }
+        private void btnDifferences_Click(object sender, EventArgs e)
+        {
+            countWords(addDiff);
+            if (true) return;
+            dgv.Rows.Clear();
+            var items = from p in dictionary
+                        orderby p.Key ascending
+                        select p;
+            foreach (KeyValuePair<string, Pair> p in items)
+            {
+                if (p.Value.a != p.Value.b)
+                    dgv.Rows.Add(p.Key, p.Value.a, p.Value.b, p.Value.a - p.Value.b);
+            }
 
-    }
+        }
 
-    private void btnClose_Click(object sender, EventArgs e)
-    {
-      this.Dispose();
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
     }
-  }
 }

@@ -9,6 +9,7 @@ using TT.Data;
 using TT.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
 
 namespace TT.Controllers
 {
@@ -63,6 +64,14 @@ namespace TT.Controllers
             return View(record);
         }
 
+        private DateTime localDateTime()
+        {
+            DateTime utc = DateTime.UtcNow;
+            TimeZoneInfo IsraelZone = TimeZoneInfo.FindSystemTimeZoneById("Israel Standard Time");
+            DateTime localTime = TimeZoneInfo.ConvertTime(utc, IsraelZone);
+            return localTime;
+        }
+
         // GET: Records/Create
         public IActionResult Create()
         {
@@ -89,7 +98,7 @@ namespace TT.Controllers
             {
                 ViewData["TrackId"] = new SelectList(_context.Tracks, "TrackId", "Name");
                 var record = new Record();
-                record.TaskStart = DateTime.Now;
+                record.TaskStart = localDateTime();
                 return View(record);
             }
         }
@@ -127,7 +136,8 @@ namespace TT.Controllers
             }
             if (record.IsActive)
             {
-                record.TaskEnd = DateTime.Now;
+                record.TaskEnd = localDateTime();
+                //record.TaskEnd = DateTime.Now;
             }
             ViewData["TrackId"] = new SelectList(_context.Tracks, "TrackId", "Name", record.TrackId);
             return View("Finish", record);

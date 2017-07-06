@@ -16,10 +16,7 @@
                     @Html.DisplayNameFor(model => model.Age)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.MLUFrom)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.MLUTo)
+                    MUL Range
                 </th>
             <th></th>
         </tr>
@@ -31,10 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Age)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MLUFrom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MLUTo)
+                @Html.DisplayFor(modelItem => item.MLUFrom) - @Html.DisplayFor(modelItem => item.MLUTo)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.MLUId">Edit</a> |
@@ -45,3 +39,9 @@
 }
     </tbody>
 </table>
+
+    <p>
+        <small>
+            Center for Speech and Language Pathology: "Early Morphological Development"
+        </small>
+    </p>

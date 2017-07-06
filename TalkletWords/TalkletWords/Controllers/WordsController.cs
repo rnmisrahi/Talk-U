@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TalkletWords.Data;
 using TalkletWords.Models;
+using PagedList;
 
 namespace TalkletWords.Controllers
 {
@@ -20,10 +21,60 @@ namespace TalkletWords.Controllers
         }
 
         // GET: Words
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string currentFilter, string searchString, bool showAll, int? page)
         {
-            var applicationDbContext = _context.Words.Include(w => w.Category).Include(w => w.WordType);
-            return View(await applicationDbContext.ToListAsync());
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            ///IQueryable<Word> words2 = _context.Words;
+
+            var words = from w in _context.Words select w;
+            ViewBag.CurrentFilter = searchString;
+            if (showAll || String.IsNullOrEmpty(searchString))
+            {
+                words = words.Include(w => w.Category).Include(w => w.WordType);
+            }
+            else
+            {
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    words = words.Include(w => w.Category).Include(w => w.WordType).Where(w => w.Definition.Contains(searchString));
+                }
+                else
+                {
+                    ///var applicationDbContext = _context.Words.Include(w => w.Category).Include(w => w.WordType);
+                    ///return View(await applicationDbContext.ToListAsync());
+                    words = words.Include(w => w.Category).Include(w => w.WordType);
+                }
+            }
+            int pageSize = 20;
+            int pageNumber = (page ?? 1);
+
+            return View(await PaginatedList<Word>.CreateAsync(words.AsNoTracking(), page ?? 1, pageSize));
+
+        }
+
+        // GET: Words
+        public ActionResult WordsInCategory(int? Id)
+        {
+            var words = from w in _context.Words select w;
+            words = words.Include(w => w.Category).Include(w => w.WordType).Where(w=>w.CategoryId == Id);
+            return View("WordsInCategory", words);
+        }
+
+        // GET: Words
+        public ActionResult WordsInWordType(int? Id)
+        {
+            var words = from w in _context.Words select w;
+            words = words.Include(w => w.Category).Include(w => w.WordType).Where(w => w.WordTypeId == Id);
+            return View("WordsInWordType", words);
         }
 
         // GET: Words/Details/5

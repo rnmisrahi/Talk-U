@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Word Types</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -27,7 +27,8 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.WordTypeId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.WordTypeId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.WordTypeId">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.WordTypeId">Delete</a> |
+                <a asp-controller="Words" asp-action="WordsInWordType" asp-route-id="@item.WordTypeId">Words</a>
             </td>
         </tr>
 }

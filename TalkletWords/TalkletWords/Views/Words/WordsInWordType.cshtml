@@ -1,0 +1,58 @@
+@model IEnumerable<TalkletWords.Models.Word>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>
+    @{
+        var category = "";
+        var words = Model.Count();
+        if(words > 0){
+            category = Model.First().WordType.Name;
+        }
+    }
+    <b>@Html.Raw(words)</b> Words in Word Type <b>"@Html.Raw(category)"</b>
+</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Definition)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Average)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Definition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Average)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.WordId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.WordId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.WordId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-controller="WordTypes" asp-action="Index">Back to Word Types</a>
+</div>

@@ -27,5 +27,7 @@ namespace TT.Data
             builder.Entity<Track>().ToTable("Track");
             builder.Entity<Record>().ToTable("Record");
         }
+
+        public DbSet<TT.Models.DailyWork> DailyWork { get; set; }
     }
 }
